@@ -121,6 +121,12 @@ async function nextRound(){
   userSeq = [];
   level++;
   levelEl.textContent = level;
+  // update high score immediately when level increases (shows progress while playing)
+  if(level > highScore){
+    highScore = level;
+    localStorage.setItem('simon_high', highScore);
+    highEl.textContent = highScore;
+  }
   const choice = pads[Math.floor(Math.random()*pads.length)];
   gameSeq.push(choice);
   // only flash the newly added color (don't replay whole sequence)
@@ -133,11 +139,7 @@ function gameOver(){
   setTimeout(()=>document.body.classList.remove('flash-error'),400);
   startBtn.disabled = false;
   startBtn.textContent = 'Restart';
-  if(level - 1 > highScore){
-    highScore = level - 1;
-    localStorage.setItem('simon_high', highScore);
-    highEl.textContent = highScore;
-  }
+  // keep highScore as-is (already updated during play)
   level = 0;
   gameSeq = [];
   userSeq = [];
@@ -162,6 +164,13 @@ function handlePadClick(e){
   }
   if(userSeq.length === gameSeq.length){
     // successful round
+    // update high score with completed rounds (level is current level)
+    const completed = level; // player's current level before increment
+    if(completed > highScore){
+      highScore = completed;
+      localStorage.setItem('simon_high', highScore);
+      highEl.textContent = highScore;
+    }
     setTimeout(()=> nextRound(), 700);
   }
 }
