@@ -86,10 +86,10 @@ async function playSequence(){
   await sleep(250);
   for(const col of gameSeq){
     const el = document.getElementById(col);
-  el.classList.add('play');
+  el.classList.add('auto-play');
   playTone(freqs[col], 420);
   await sleep(520);
-  el.classList.remove('play');
+  el.classList.remove('auto-play');
   await sleep(140);
   }
   playing = false;
@@ -102,10 +102,12 @@ async function playSingleColor(col){
   disablePads(true);
   await sleep(200);
   const el = document.getElementById(col);
-  el.classList.add('play');
+  // Use a dedicated class for auto-play, so it won't conflict with user clicks
+  el.classList.add('auto-play');
   playNewTone(freqs[col], 420);
+  // ensure we remove the class even if something else happens
   await sleep(520);
-  el.classList.remove('play');
+  el.classList.remove('auto-play');
   await sleep(140);
   playing = false;
   disablePads(false);
@@ -147,9 +149,11 @@ function handlePadClick(e){
   const id = e.currentTarget.id;
   userSeq.push(id);
   // feedback
-  e.currentTarget.classList.add('play');
+  const el = e.currentTarget;
+  // Add user-play class briefly, different visual from auto-play
+  el.classList.add('user-play');
   playClickTone(freqs[id], 180);
-  setTimeout(()=> e.currentTarget.classList.remove('play'), 180);
+  setTimeout(()=> el.classList.remove('user-play'), 180);
   // check
   const idx = userSeq.length - 1;
   if(userSeq[idx] !== gameSeq[idx]){
