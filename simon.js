@@ -216,8 +216,45 @@ startBtn.addEventListener('click', async ()=>{
   nextRound();
 });
 
-// allow keyboard to start/restart
+// Help modal logic
+const howtoBtn = document.getElementById('howto');
+const helpModal = document.getElementById('help-dialog');
+let helpOpen = false;
+
+function openHelp(){
+  if(!helpModal) return;
+  helpModal.hidden = false;
+  helpOpen = true;
+  // focus heading for screen readers
+  const h = helpModal.querySelector('#help-title');
+  if(h) h.tabIndex = -1, h.focus();
+}
+function closeHelp(){
+  if(!helpModal) return;
+  helpModal.hidden = true;
+  helpOpen = false;
+  // return focus to button
+  if(howtoBtn) howtoBtn.focus();
+}
+if(howtoBtn){ howtoBtn.addEventListener('click', openHelp); }
+if(helpModal){
+  helpModal.addEventListener('click', (e)=>{
+    const target = e.target;
+    if(target && (target.hasAttribute('data-close') || target === helpModal)){
+      closeHelp();
+    }
+  });
+  // close on Escape
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && helpOpen){
+      closeHelp();
+    }
+  });
+}
+
+// allow keyboard to start/restart (disabled while help is open)
 document.addEventListener('keydown', async ()=>{
+  if(helpOpen) return;
   if(gameSeq.length === 0){
     startBtn.click();
   }

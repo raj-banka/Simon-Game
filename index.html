@@ -18,6 +18,7 @@
                     <div id="level">0</div>
                 </div>
                 <button id="start" aria-pressed="false">Start</button>
+                <button id="howto" type="button" aria-haspopup="dialog" aria-controls="help-dialog">Help</button>
                 <div class="sound">
                     <label class="mute"><input type="checkbox" id="mute"> Mute</label>
                     <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" aria-label="volume">
@@ -39,6 +40,24 @@
         </main>
 
         <footer class="hint">Click Start or press any key to begin. Repeat the sequence to level up.</footer>
+    </div>
+
+    <!-- Accessible help modal -->
+    <div class="modal" id="help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+        <div class="modal__overlay" data-close></div>
+        <div class="modal__dialog" role="document">
+            <button class="modal__close" type="button" aria-label="Close" data-close>&times;</button>
+            <h2 id="help-title">How to Play</h2>
+            <ol class="rules">
+                <li>Press Start. Watch which color blinks.</li>
+                <li>Tap the same color.</li>
+                <li>Each level adds one more color at the end.</li>
+                <li>Repeat the full order to level up.</li>
+                <li>If you tap the wrong color, the game ends. Try again!</li>
+            </ol>
+            <p class="tips">Tip: The sounds match the colors—use them to remember.</p>
+            <button class="modal__action" type="button" data-close>Got it</button>
+        </div>
     </div>
 
     <script src="simon.js"></script>

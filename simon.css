@@ -38,10 +38,15 @@ body{
   row-gap:8px;
   align-items:center;
   margin-top:14px; /* slight space from top */
+  position:relative; /* for top-right help link */
 }
 .top h1{margin:0;font-size:28px;letter-spacing:0.3px;color:var(--ink);text-align:center}
-.controls{display:flex;gap:10px;align-items:center;justify-self:center;flex-wrap:wrap;margin-top:8px}
+.controls{display:flex;gap:10px;align-items:center;justify-self:center;flex-wrap:wrap;margin-top:40px}
 .controls > *{flex:0 0 auto}
+/* Help link at top-right */
+#howto{position:absolute;top:8px;right:12px;background:transparent;border:none;padding:0;margin:0;box-shadow:none;color:#1b4dd9;text-decoration:underline;font-weight:600;cursor:pointer}
+#howto:hover{color:#0f3ed0}
+#howto:active{transform:none}
 
 /* Chips */
 .score,.highscore{background:var(--panel);padding:8px 12px;border-radius:12px;box-shadow:0 8px 18px rgba(15,30,50,0.08);text-align:center;min-width:60px}
@@ -82,6 +87,20 @@ body{
 /* Footer hint */
 .hint{color:#333;margin:6px auto 12px auto;font-size:13px;text-align:center}
 
+/* Modal (help dialog) */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:1000}
+.modal__overlay{position:absolute;inset:0;background:rgba(6,14,30,0.45)}
+.modal__dialog{position:relative;margin: min(8vh,64px) auto;background:#fff;width:min(92vw,560px);border-radius:14px;box-shadow:0 30px 80px rgba(10,20,40,0.28);padding:18px 18px 16px}
+.modal__close{position:absolute;top:8px;right:10px;border:none;background:transparent;font-size:28px;line-height:1;color:#4a5568;cursor:pointer}
+.modal__close:hover{color:#000}
+.modal__dialog h2{margin:8px 6px 10px 6px;font-size:22px}
+.rules{margin:0 6px 8px 26px;padding:0;line-height:1.6}
+.rules li{margin-bottom:6px}
+.tips{margin:4px 6px 14px 6px;color:#334}
+.modal__action{display:inline-block;background:var(--accent);color:white;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.modal__action:active{transform:translateY(1px)}
+
 /* Tablet */
 @media (max-width:700px){
   .app{padding:14px}
@@ -95,6 +114,7 @@ body{
   :root{ --pad-size: clamp(120px, 34vmin, 184px); }
   .top h1{font-size:18px}
   .controls{gap:8px}
+  #howto{font-size:13px;right:10px;top:6px}
   .score,.highscore{min-width:54px;padding:6px 10px}
   .score .label,.highscore .label{font-size:11px}
   #level,#highS{font-size:16px}
