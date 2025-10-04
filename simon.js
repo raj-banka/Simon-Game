@@ -54,17 +54,33 @@ async function playSequence(){
   disablePads(false);
 }
 
+// Play only the single newly added color (used for incremental rounds)
+async function playSingleColor(col){
+  playing = true;
+  disablePads(true);
+  await sleep(200);
+  const el = document.getElementById(col);
+  el.classList.add('play');
+  playTone(freqs[col], 350);
+  await sleep(420);
+  el.classList.remove('play');
+  await sleep(120);
+  playing = false;
+  disablePads(false);
+}
+
 function disablePads(val){
   padEls.forEach(p=> p.disabled = val);
 }
 
-function nextRound(){
+async function nextRound(){
   userSeq = [];
   level++;
   levelEl.textContent = level;
   const choice = pads[Math.floor(Math.random()*pads.length)];
   gameSeq.push(choice);
-  playSequence();
+  // only flash the newly added color (don't replay whole sequence)
+  await playSingleColor(choice);
 }
 
 function gameOver(){
