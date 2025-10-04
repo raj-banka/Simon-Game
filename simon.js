@@ -17,6 +17,33 @@ highEl.textContent = highScore;
 // WebAudio setup
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = AudioCtx ? new AudioCtx() : null;
+// Master gain for global volume/mute
+const masterGain = audioCtx ? audioCtx.createGain() : null;
+if(masterGain){
+  masterGain.gain.value = Number(localStorage.getItem('simon_vol') ?? 0.8);
+  masterGain.connect(audioCtx.destination);
+}
+
+// UI sound controls
+const muteEl = document.getElementById('mute');
+const volumeEl = document.getElementById('volume');
+if(muteEl && volumeEl && masterGain){
+  const savedMute = localStorage.getItem('simon_mute') === '1';
+  muteEl.checked = savedMute;
+  const vol = Number(localStorage.getItem('simon_vol') ?? 0.8);
+  volumeEl.value = String(vol);
+  masterGain.gain.value = savedMute ? 0 : vol;
+  muteEl.addEventListener('change', ()=>{
+    const m = muteEl.checked;
+    localStorage.setItem('simon_mute', m ? '1':'0');
+    masterGain.gain.value = m ? 0 : Number(volumeEl.value);
+  });
+  volumeEl.addEventListener('input', ()=>{
+    const v = Number(volumeEl.value);
+    localStorage.setItem('simon_vol', String(v));
+    if(!muteEl.checked) masterGain.gain.value = v;
+  });
+}
 function playTone(freq, duration = 300){
   if(!audioCtx) return;
   const o = audioCtx.createOscillator();
@@ -25,7 +52,7 @@ function playTone(freq, duration = 300){
   o.frequency.value = freq;
   g.gain.value = 0.0001;
   o.connect(g);
-  g.connect(audioCtx.destination);
+  g.connect(masterGain || audioCtx.destination);
   const now = audioCtx.currentTime;
   g.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
   o.start(now);
@@ -40,7 +67,7 @@ function playNewTone(freq, duration = 420){
   const g = audioCtx.createGain();
   o.type = 'triangle';
   o.frequency.value = freq * 1.02; // slightly higher timbre
-  o.connect(g); g.connect(audioCtx.destination);
+  o.connect(g); g.connect(masterGain || audioCtx.destination);
   const now = audioCtx.currentTime;
   g.gain.setValueAtTime(0.0001, now);
   g.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
@@ -55,7 +82,7 @@ function playClickTone(freq, duration = 180){
   const g = audioCtx.createGain();
   o.type = 'square';
   o.frequency.value = freq;
-  o.connect(g); g.connect(audioCtx.destination);
+  o.connect(g); g.connect(masterGain || audioCtx.destination);
   const now = audioCtx.currentTime;
   g.gain.setValueAtTime(0.0001, now);
   g.gain.exponentialRampToValueAtTime(0.16, now + 0.01);
