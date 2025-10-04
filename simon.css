@@ -24,12 +24,14 @@ body{
 
 .top{
     width:100%;
-    position:relative;
-    display:block;
-    padding-bottom:6px;
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    row-gap:8px;
+    align-items:center;
 }
 .top h1{margin:0;font-size:24px;text-align:center}
-.controls{position:absolute;right:6px;top:6px;display:flex;gap:8px;align-items:center}
+.controls{display:flex;gap:8px;align-items:center;justify-self:end;flex-wrap:wrap}
 .score,.highscore{background:var(--panel);padding:8px 14px;border-radius:10px;box-shadow:0 6px 18px rgba(15,30,50,0.06);text-align:center}
 .score .label,.highscore .label{font-size:12px;color:#666}
 #level,#highS{font-weight:700;font-size:18px}
@@ -63,10 +65,7 @@ body{
 
 /* Very small screens: stack header and center controls */
 @media (max-width:420px){
-    .top{flex-direction:column;align-items:center;gap:10px}
-    .controls{flex-direction:row;gap:8px;align-items:center}
-    .score,.highscore{order:0}
-    #start{order:1}
+    .controls{justify-self:center}
     .top h1{font-size:18px}
 }
 
