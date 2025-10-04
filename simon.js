@@ -33,6 +33,48 @@ function playTone(freq, duration = 300){
   o.stop(now + duration/1000 + 0.02);
 }
 
+// Distinct sounds: new color blink, player click, fail sequence
+function playNewTone(freq, duration = 420){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'triangle';
+  o.frequency.value = freq * 1.02; // slightly higher timbre
+  o.connect(g); g.connect(audioCtx.destination);
+  const now = audioCtx.currentTime;
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+  o.start(now);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + duration/1000);
+  o.stop(now + duration/1000 + 0.02);
+}
+
+function playClickTone(freq, duration = 180){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = 'square';
+  o.frequency.value = freq;
+  o.connect(g); g.connect(audioCtx.destination);
+  const now = audioCtx.currentTime;
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(0.16, now + 0.01);
+  o.start(now);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + duration/1000);
+  o.stop(now + duration/1000 + 0.01);
+}
+
+function playFailTone(){
+  if(!audioCtx) return;
+  // descending short tones
+  const seq = [420, 300, 220];
+  seq.forEach((f, i) => {
+    const t = 100;
+    const delay = i * (t + 40);
+    setTimeout(()=> playTone(f, t), delay);
+  });
+}
+
 const freqs = { red: 330, blue: 440, green: 550, yellow: 660 };
 
 // Helpers
@@ -61,7 +103,7 @@ async function playSingleColor(col){
   await sleep(200);
   const el = document.getElementById(col);
   el.classList.add('play');
-  playTone(freqs[col], 420);
+  playNewTone(freqs[col], 420);
   await sleep(520);
   el.classList.remove('play');
   await sleep(140);
@@ -85,7 +127,7 @@ async function nextRound(){
 
 function gameOver(){
   document.body.classList.add('flash-error');
-  playTone(120,200);
+  playFailTone();
   setTimeout(()=>document.body.classList.remove('flash-error'),400);
   startBtn.disabled = false;
   startBtn.textContent = 'Restart';
@@ -106,7 +148,7 @@ function handlePadClick(e){
   userSeq.push(id);
   // feedback
   e.currentTarget.classList.add('play');
-  playTone(freqs[id], 200);
+  playClickTone(freqs[id], 180);
   setTimeout(()=> e.currentTarget.classList.remove('play'), 180);
   // check
   const idx = userSeq.length - 1;
