@@ -9,25 +9,32 @@
 </head>
 
 <body>
-    <h1>Simon Say Game</h1>
-    <h3>Press any key to restart!!</h3>
-    <div class="highscore">
-        <h3 class="high">Heighest Score <br>
-            <div class="highS">0</div>
-        </h3>
-    </div>
-
-
-    <div class="btn-container">
-        <div class="line-one">
-            <div class="btn red" type="button" id="red">1</div>
-            <div class="btn green" type="button" id="green">2</div>
+    <header class="top">
+        <h1>Simon Say</h1>
+        <div class="controls">
+            <div class="score">
+                <div class="label">Level</div>
+                <div id="level">0</div>
+            </div>
+            <button id="start" aria-pressed="false">Start</button>
+            <div class="highscore">
+                <div class="label">Highest</div>
+                <div id="highS">0</div>
+            </div>
         </div>
-        <div class="line-two">
-            <div class="btn blue" type="button" id="blue">3</div>
-            <div class="btn yellow" type="button" id="yellow">4</div>
-        </div>
-    </div>
+    </header>
+
+    <main>
+        <section class="board" role="application" aria-label="Simon game buttons">
+            <button class="pad red" id="red" aria-label="red pad"></button>
+            <button class="pad blue" id="blue" aria-label="blue pad"></button>
+            <button class="pad green" id="green" aria-label="green pad"></button>
+            <button class="pad yellow" id="yellow" aria-label="yellow pad"></button>
+        </section>
+    </main>
+
+    <footer class="hint">Click Start or press any key to begin. Repeat the sequence to level up.</footer>
+
     <script src="simon.js"></script>
 </body>
 
