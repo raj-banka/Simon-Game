@@ -46,7 +46,9 @@ body{
 .green{background: linear-gradient(180deg,#12a02a,#007b1a)}
 .yellow{background: linear-gradient(180deg,#fffb60,#fff000)}
 
-.pad.play{filter:brightness(1.4) saturate(1.15); box-shadow:0 12px 30px rgba(0,0,0,0.18)}
+.pad.play{filter:brightness(1.5) saturate(1.25); box-shadow:0 18px 40px rgba(0,0,0,0.25); transform:scale(1.06); border-color: #fff8; transition:transform .08s, box-shadow .08s, filter .08s}
+
+.pad.play::after{content:'';position:absolute;left:0;right:0;top:0;bottom:0;border-radius:22%;box-shadow:0 0 30px rgba(255,255,255,0.18) inset;pointer-events:none}
 
 .hint{color:#333;margin-bottom:30px;font-size:14px}
 

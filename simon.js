@@ -44,11 +44,11 @@ async function playSequence(){
   await sleep(250);
   for(const col of gameSeq){
     const el = document.getElementById(col);
-    el.classList.add('play');
-    playTone(freqs[col], 350);
-    await sleep(450);
-    el.classList.remove('play');
-    await sleep(120);
+  el.classList.add('play');
+  playTone(freqs[col], 420);
+  await sleep(520);
+  el.classList.remove('play');
+  await sleep(140);
   }
   playing = false;
   disablePads(false);
@@ -61,10 +61,10 @@ async function playSingleColor(col){
   await sleep(200);
   const el = document.getElementById(col);
   el.classList.add('play');
-  playTone(freqs[col], 350);
-  await sleep(420);
+  playTone(freqs[col], 420);
+  await sleep(520);
   el.classList.remove('play');
-  await sleep(120);
+  await sleep(140);
   playing = false;
   disablePads(false);
 }
